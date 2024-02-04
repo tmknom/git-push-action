@@ -1,36 +1,44 @@
-# template-composite-action
+# git-push-action
 
-Template repository for Composite Action.
+Commit all modified files and push to the repository.
 
 <!-- actdocs start -->
 
 ## Description
 
-Template repository for creating Composite Action with GitHub Actions.
+This action creates a new commit and pushes the changes back to the remote repository.
+It automatically commits files that were modified during the workflow run.
 
 ## Usage
 
-Write usage for your Composite Action.
-
 ```yaml
   steps:
-    - name: Template
-      uses: tmknom/template-composite-action@v0
+    - name: Git Push
+      uses: tmknom/git-push-action@v0
+      with:
+        message: add useful feature
 ```
 
 ## Inputs
 
-N/A
+| Name | Description | Default | Required |
+| :--- | :---------- | :------ | :------: |
+| message | The commit message. | n/a | yes |
 
 ## Outputs
 
-N/A
+| Name | Description |
+| :--- | :---------- |
+| branch | Name of the pushed branch. |
+| pushed | Whether the changes pushed to the repository. |
 
 <!-- actdocs end -->
 
 ## Permissions
 
-N/A
+| Scope    | Access |
+| :------- | :----- |
+| contents | write  |
 
 ## FAQ
 
@@ -44,4 +52,4 @@ See [GitHub Releases][releases].
 
 Apache 2 Licensed. See [LICENSE](LICENSE) for full details.
 
-[releases]: https://github.com/tmknom/template-composite-action/releases
+[releases]: https://github.com/tmknom/git-push-action/releases
