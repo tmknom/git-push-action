@@ -47,7 +47,7 @@ runs:
       run: |
         echo "::group::Git diff status"
         set -x
-        if [[ "$(git status -s)" != "" ]]; then
+        if [[ "$(git status --short --untracked-files)" != "" ]]; then
           echo "diff=true" >> "${GITHUB_OUTPUT}"
         else
           echo "diff=false" >> "${GITHUB_OUTPUT}"

@@ -26,14 +26,24 @@ jobs:
     outputs:
       pushed: ${{ steps.exercise.outputs.pushed }}
       branch: ${{ steps.exercise.outputs.branch }}
+      pushed-file: ${{ steps.setup.outputs.file }}
     steps:
       - name: Checkout
         uses: tmknom/checkout-action@v1
 
+      - name: Traceable Identifier
+        id: traceable
+        uses: tmknom/traceable-identifier-action@6555160c543eb771a876fb4ceaecd43ec79df7b6 # v0.1.0
+
       - name: Setup
+        id: setup
+        env:
+          IDENTIFIER: ${{ steps.traceable.outputs.identifier }}
         run: |
           set -x
-          date >> README.md
+          filename="${IDENTIFIER}.md"
+          date > "${filename}"
+          echo "file=${filename}" >> "${GITHUB_OUTPUT}"
 
       - name: Git Config
         uses: tmknom/git-config-action@6ddb0c7929ae61b4bbfb5a0800d4ca72fa2584de # v0.1.0
@@ -56,15 +66,17 @@ jobs:
         uses: tmknom/checkout-action@v1
         with:
           ref: ${{ needs.exercise.outputs.branch }}
-          fetch-depth: 3
+          fetch-depth: 2
 
       - name: Verify
         env:
           PUSHED: ${{ needs.exercise.outputs.pushed }}
+          PUSHED_FILE: ${{ needs.exercise.outputs.pushed-file }}
         run: |
           set -x
           test "${PUSHED}" = "true"
-          test "$(git log --oneline --pretty=%s -1)" = "Test git-push-action"
+          test "$(git log -1 --pretty=%s)" = "Test git-push-action"
+          test "$(git log -1 --name-only --pretty=format:)" = "${PUSHED_FILE}"
 
   teardown:
     name: Teardown
