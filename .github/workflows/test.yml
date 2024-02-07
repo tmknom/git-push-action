@@ -45,9 +45,6 @@ jobs:
           date > "${filename}"
           echo "file=${filename}" >> "${GITHUB_OUTPUT}"
 
-      - name: Git Config
-        uses: tmknom/git-config-action@6ddb0c7929ae61b4bbfb5a0800d4ca72fa2584de # v0.1.0
-
       - name: Exercise
         id: exercise
         uses: ./
