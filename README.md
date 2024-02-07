@@ -44,6 +44,10 @@ It automatically commits files that were modified during the workflow run.
 
 N/A
 
+## Related projects
+
+- [git-config-action](https://github.com/tmknom/git-config-action): Configure the bot account in Git.
+
 ## Release notes
 
 See [GitHub Releases][releases].
