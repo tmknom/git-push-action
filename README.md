@@ -24,6 +24,7 @@ It automatically commits files that were modified during the workflow run.
 | Name | Description | Default | Required |
 | :--- | :---------- | :------ | :------: |
 | message | The commit message. | n/a | yes |
+| allow-empty | Set to true to allow creating empty commits. | `false` | no |
 
 ## Outputs
 

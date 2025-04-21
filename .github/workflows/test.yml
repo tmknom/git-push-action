@@ -116,3 +116,29 @@ jobs:
         run: |
           set -x
           test "${PUSHED}" = "false"
+
+  test-allow-empty:
+    name: Test allow-empty
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          message: Created at ${{ github.job }}/${{ github.run_id }}/${{ github.run_attempt }}
+          allow-empty: true
+
+      - name: Verify
+        env:
+          PUSHED: ${{ steps.exercise.outputs.pushed }}
+          SUBJECT: ${{ steps.exercise.outputs.subject }}
+        run: |
+          set -x
+          test "${PUSHED}" = "true"
+          test "${SUBJECT}" = "Created at ${GITHUB_JOB}/${GITHUB_RUN_ID}/${GITHUB_RUN_ATTEMPT}"
