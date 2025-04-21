@@ -31,6 +31,7 @@ It automatically commits files that were modified during the workflow run.
 | :--- | :---------- |
 | branch | Name of the pushed branch. |
 | pushed | Whether the changes pushed to the repository. |
+| subject | The subject of the commit message. |
 
 <!-- actdocs end -->
 

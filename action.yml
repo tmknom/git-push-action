@@ -25,6 +25,9 @@ outputs:
   branch:
     value: ${{ steps.push.outputs.branch }}
     description: Name of the pushed branch.
+  subject:
+    value: ${{ steps.push.outputs.subject }}
+    description: The subject of the commit message.
 
 runs:
   using: composite
@@ -67,6 +70,8 @@ runs:
         git add .
         git commit -m "${MESSAGE}" -m "${log}" -m "${url}"
         git push origin "${branch}"
+
         echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
+        echo "subject=$(git log -1 --format='%s')" >> "${GITHUB_OUTPUT}"
         echo "::endgroup::"
       shell: bash
