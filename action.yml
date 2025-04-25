@@ -20,6 +20,10 @@ inputs:
   branch:
     required: false
     description: Specify the name for the new branch.
+  start-point:
+    default: HEAD
+    required: false
+    description: The starting point for the new branch, allowing creation from a different commit than `HEAD`.
   allow-empty:
     default: false
     required: false
@@ -64,6 +68,7 @@ runs:
       id: switch
       env:
         SPECIFIED_BRANCH: ${{ inputs.branch }}
+        START_POINT: ${{ inputs.start-point }}
         IDENTIFIER: ${{ steps.traceable.outputs.identifier }}
       run: |
         echo "::group::Switch branch"
@@ -74,7 +79,7 @@ runs:
         fi
         echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
 
-        git switch -c "${branch}"
+        git switch -c "${branch}" "${START_POINT}"
         git add .
         echo "::endgroup::"
       shell: bash
