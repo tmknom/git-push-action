@@ -24,6 +24,7 @@ jobs:
     outputs:
       pushed: ${{ steps.exercise.outputs.pushed }}
       branch: ${{ steps.exercise.outputs.branch }}
+      subject: ${{ steps.exercise.outputs.subject }}
       pushed-file: ${{ steps.setup.outputs.file }}
     steps:
       - name: Checkout
@@ -66,11 +67,12 @@ jobs:
       - name: Verify
         env:
           PUSHED: ${{ needs.exercise.outputs.pushed }}
+          SUBJECT: ${{ needs.exercise.outputs.subject }}
           PUSHED_FILE: ${{ needs.exercise.outputs.pushed-file }}
         run: |
           set -x
           test "${PUSHED}" = "true"
-          test "$(git log -1 --pretty=%s)" = "Test git-push-action"
+          test "${SUBJECT}" = "Test git-push-action"
           test "$(git log -1 --name-only --pretty=format:)" = "${PUSHED_FILE}"
 
   teardown:
