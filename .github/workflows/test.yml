@@ -117,6 +117,45 @@ jobs:
           set -x
           test "${PUSHED}" = "false"
 
+  test-branch:
+    name: Test branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Setup
+        run: |
+          set -x
+          date > dummy.md
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          message: Created at ${{ github.job }}/${{ github.run_id }}/${{ github.run_attempt }}
+          branch: test/specified-by/${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Verify
+        env:
+          PUSHED: ${{ steps.exercise.outputs.pushed }}
+          BRANCH: ${{ steps.exercise.outputs.branch }}
+        run: |
+          set -x
+          test "${PUSHED}" = "true"
+          test "${BRANCH}" = "test/specified-by/${GITHUB_JOB}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+      - name: Delete branch
+        if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.exercise.outputs.branch }}
+        run: |
+          set -x
+          git push origin "${BRANCH}" --delete || true
+
   test-allow-empty:
     name: Test allow-empty
     runs-on: ubuntu-latest
