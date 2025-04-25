@@ -30,17 +30,11 @@ jobs:
       - name: Checkout
         uses: tmknom/checkout-action@v1
 
-      - name: Traceable Identifier
-        id: traceable
-        uses: tmknom/traceable-identifier-action@6555160c543eb771a876fb4ceaecd43ec79df7b6 # v0.1.0
-
       - name: Setup
         id: setup
-        env:
-          IDENTIFIER: ${{ steps.traceable.outputs.identifier }}
         run: |
           set -x
-          filename="${IDENTIFIER}.md"
+          filename="dummy-${GITHUB_JOB}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.md"
           date > "${filename}"
           echo "file=${filename}" >> "${GITHUB_OUTPUT}"
 
