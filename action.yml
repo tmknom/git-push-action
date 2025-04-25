@@ -31,7 +31,7 @@ outputs:
     description: Name of the pushed branch.
   subject:
     value: ${{ steps.push.outputs.subject }}
-    description: The subject of the commit message.
+    description: The first line of the commit message.
 
 runs:
   using: composite
