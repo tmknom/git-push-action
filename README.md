@@ -7,7 +7,7 @@ Commit all modified files and push to the repository.
 ## Description
 
 This action commits changes made during the workflow run and pushes them to a remote repository.
-It supports specifying a branch name, a start point, and allows creating empty commits.
+It supports specifying a branch name, a start point, multi-line commit messages, and allows creating empty commits.
 
 ## Usage
 
