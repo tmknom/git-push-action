@@ -23,6 +23,7 @@ description: |
         uses: tmknom/git-push-action@v0
         with:
           message: add useful feature
+          paths: README.md **/*.yml
           branch: new-feature-branch
           start-point: origin/main
           allow-empty: true

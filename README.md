@@ -29,6 +29,7 @@ It supports specifying a branch name, a start point, multi-line commit messages,
       uses: tmknom/git-push-action@v0
       with:
         message: add useful feature
+        paths: README.md **/*.yml
         branch: new-feature-branch
         start-point: origin/main
         allow-empty: true
