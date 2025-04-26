@@ -47,6 +47,7 @@ It supports specifying a branch name, a start point, and allows creating empty c
 
 | Name | Description |
 | :--- | :---------- |
+| body | The body of the commit message (everything after the first line). |
 | branch | Name of the pushed branch. |
 | pushed | Whether the changes pushed to the repository. |
 | subject | The first line of the commit message. |

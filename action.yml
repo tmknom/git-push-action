@@ -54,6 +54,9 @@ outputs:
   subject:
     value: ${{ steps.push.outputs.subject }}
     description: The first line of the commit message.
+  body:
+    value: ${{ steps.push.outputs.body }}
+    description: The body of the commit message (everything after the first line).
 
 runs:
   using: composite
@@ -120,5 +123,13 @@ runs:
 
         git push origin "${BRANCH}"
         echo "subject=$(git log -1 --format='%s')" >> "${GITHUB_OUTPUT}"
+
+        body="$(git log -1 --format='%b')"
+        delimiter="EOF$(openssl rand -hex 8)"
+        {
+          echo "body<<${delimiter}"
+          echo "${body}"
+          echo "${delimiter}"
+        } >> "${GITHUB_OUTPUT}"
         echo "::endgroup::"
       shell: bash
