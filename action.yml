@@ -35,6 +35,9 @@ inputs:
   branch:
     required: false
     description: Specify the name for the new branch.
+  paths:
+    required: false
+    description: Space-separated list of file paths to add before committing. Supports glob patterns such as `*.md` or `docs/*.txt`. If not specified, all changes are added (equivalent to `.`).
   start-point:
     default: HEAD
     required: false
@@ -96,9 +99,22 @@ runs:
           branch="auto/${IDENTIFIER}"
         fi
         echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
-
         git switch -c "${branch}" "${START_POINT}"
-        git add .
+        echo "::endgroup::"
+      shell: bash
+
+    - name: Git add
+      env:
+        PATHS: ${{ inputs.paths }}
+      run: |
+        echo "::group::Git add"
+        set -x
+        if [[ "${PATHS}" != "" ]]; then
+          IFS=' ' read -ra arr <<< "${PATHS}"
+          git add "${arr[@]}"
+        else
+          git add .
+        fi
         echo "::endgroup::"
       shell: bash
 

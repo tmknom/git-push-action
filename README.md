@@ -41,6 +41,7 @@ It supports specifying a branch name, a start point, multi-line commit messages,
 | message | The commit message. | n/a | yes |
 | allow-empty | Set to true to allow creating empty commits. | `false` | no |
 | branch | Specify the name for the new branch. | n/a | no |
+| paths | Space-separated list of file paths to add before committing. Supports glob patterns such as `*.md` or `docs/*.txt`. If not specified, all changes are added (equivalent to `.`). | n/a | no |
 | start-point | The starting point for the new branch, allowing creation from a different commit than `HEAD`. | `HEAD` | no |
 
 ## Outputs
