@@ -112,11 +112,16 @@ runs:
       run: |
         echo "::group::Git add"
         set -x
+        declare -a flags=(.)
         if [[ "${PATHS}" != "" ]]; then
-          IFS=' ' read -ra arr <<< "${PATHS}"
-          git add "${arr[@]}"
-        else
-          git add .
+          IFS=' ' read -ra flags <<< "${PATHS}"
+        fi
+
+        error="$(mktemp)"
+        if ! git add "${flags[@]}" 2> "${error}"; then
+          echo "::error title=git add failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          rm -f "${error}"
+          exit 1
         fi
         echo "::endgroup::"
       shell: bash

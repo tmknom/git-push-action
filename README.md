@@ -127,7 +127,7 @@ If you attempt to push to an existing branch, a Git command error such as "branc
 
 ### What happens if an error occurs during Git operations?
 
-If a Git operation such as `switch`, `commit`, or `push` fails,
+If a Git operation such as `switch`, `add`, `commit`, or `push` fails,
 the action will output a detailed error message and fail immediately.
 The error message includes the Git command's stderr output for easier debugging.
 
