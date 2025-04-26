@@ -99,7 +99,12 @@ runs:
           branch="auto/${IDENTIFIER}"
         fi
         echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
-        git switch -c "${branch}" "${START_POINT}"
+
+        error="$(mktemp)"
+        if ! git switch -c "${branch}" "${START_POINT}" 2> "${error}"; then
+          echo "::error title=git switch failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          exit 1
+        fi
         echo "::endgroup::"
       shell: bash
 
@@ -138,7 +143,12 @@ runs:
         if [[ "${ALLOW_EMPTY}" == "true" ]]; then
           flags+=(--allow-empty)
         fi
-        git commit "${flags[@]}"
+
+        error="$(mktemp)"
+        if ! git commit "${flags[@]}" 2> "${error}"; then
+          echo "::error title=git commit failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          exit 1
+        fi
         echo "::endgroup::"
       shell: bash
 
@@ -150,7 +160,11 @@ runs:
       run: |
         echo "::group::Git push"
         set -x
-        git push origin "${BRANCH}"
+        error="$(mktemp)"
+        if ! git push origin "${BRANCH}" 2> "${error}"; then
+          echo "::error title=git push failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          exit 1
+        fi
 
         echo "subject=$(git log -1 --format='%s')" >> "${GITHUB_OUTPUT}"
         body="$(git log -1 --format='%b')"
