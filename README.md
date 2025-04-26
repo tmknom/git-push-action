@@ -6,8 +6,8 @@ Commit all modified files and push to the repository.
 
 ## Description
 
-This action creates a new commit and pushes the changes back to the remote repository.
-It automatically commits files that were modified during the workflow run.
+This action commits changes made during the workflow run and pushes them to a remote repository.
+It supports specifying a branch name, a start point, and allows creating empty commits.
 
 ## Usage
 
