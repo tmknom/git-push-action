@@ -96,6 +96,22 @@ to retrieve the complete branch history.
 Normally, if there are no changes, no commit or push will occur.
 However, if you set `allow-empty: true`, an empty commit will be created even when there are no changes.
 
+### Can I specify a multi-line commit message?
+
+Yes. You can specify a multi-line commit message by using YAML's block scalar style (`|`),
+which preserves newlines as part of the string.
+For example:
+
+```yaml
+with:
+  message: |
+    First line of subject
+    Second line of body
+    Third line of body
+```
+
+The first line will be treated as the commit subject, and the following lines as the commit body.
+
 ### Can I push to an existing branch?
 
 Currently, the implementation assumes pushing to a newly created branch.
