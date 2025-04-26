@@ -11,12 +11,27 @@ It supports specifying a branch name, a start point, and allows creating empty c
 
 ## Usage
 
+### Default
+
 ```yaml
   steps:
     - name: Git Push
       uses: tmknom/git-push-action@v0
       with:
         message: add useful feature
+```
+
+### Custom
+
+```yaml
+  steps:
+    - name: Git Push
+      uses: tmknom/git-push-action@v0
+      with:
+        message: add useful feature
+        branch: new-feature-branch
+        start-point: origin/main
+        allow-empty: true
 ```
 
 ## Inputs
