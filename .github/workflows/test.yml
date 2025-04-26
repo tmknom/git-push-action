@@ -334,3 +334,73 @@ jobs:
         run: |
           set -x
           git push origin "${BRANCH}" --delete || true
+
+  test-switch-error:
+    name: Test switch error
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          message: Created at ${{ github.job }}/${{ github.run_id }}/${{ github.run_attempt }}
+          branch: main
+          start-point: main
+          allow-empty: true
+        continue-on-error: true
+
+      - name: Verify
+        if: ${{ always() }}
+        env:
+          OUTCOME: ${{ steps.exercise.outcome }}
+        run: |
+          set -x
+          test "${OUTCOME}" = "failure"
+
+      - name: Delete branch
+        if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.exercise.outputs.branch }}
+        run: |
+          set -x
+          git push origin "${BRANCH}" --delete || true
+
+  test-push-error:
+    name: Test push error
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          message: Created at ${{ github.job }}/${{ github.run_id }}/${{ github.run_attempt }}
+          allow-empty: true
+        continue-on-error: true
+
+      - name: Verify
+        if: ${{ always() }}
+        env:
+          OUTCOME: ${{ steps.exercise.outcome }}
+        run: |
+          set -x
+          test "${OUTCOME}" = "failure"
+
+      - name: Delete branch
+        if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.exercise.outputs.branch }}
+        run: |
+          set -x
+          git push origin "${BRANCH}" --delete || true
