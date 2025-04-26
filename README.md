@@ -61,7 +61,44 @@ It supports specifying a branch name, a start point, and allows creating empty c
 
 ## FAQ
 
-N/A
+### Where is the push destination if no branch is specified?
+
+If no branch is specified, a uniquely named branch will be automatically created for each workflow run.
+
+### What should I specify for `start-point`?
+
+Usually, you should specify a remote tracking branch like `origin/main`, because local branches might not exist in GitHub Actions environments.
+By default, `HEAD` is used, meaning the new branch will be created from the currently checked-out commit.
+
+### Do I need to fetch branches manually when using `start-point`?
+
+When using `start-point`, the base branch must exist in your local Git repository.
+In GitHub Actions environments, by default, only a shallow clone with limited history is performed (`fetch-depth: 1`).
+You may need to explicitly fetch the base branch using a command like:
+
+```bash
+git fetch origin main
+```
+
+or configure `actions/checkout` with:
+
+```yaml
+- uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
+```
+
+to retrieve the complete branch history.
+
+### What happens if there are no changes?
+
+Normally, if there are no changes, no commit or push will occur.
+However, if you set `allow-empty: true`, an empty commit will be created even when there are no changes.
+
+### Can I push to an existing branch?
+
+Currently, the implementation assumes pushing to a newly created branch.
+If you attempt to push to an existing branch, a Git command error such as "branch already exists" may occur.
 
 ## Related projects
 
