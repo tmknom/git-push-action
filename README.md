@@ -134,7 +134,6 @@ The error message includes the Git command's stderr output for easier debugging.
 ## Related projects
 
 - [git-config-action](https://github.com/tmknom/git-config-action): Configure the bot account in Git.
-- [traceable-identifier-action](https://github.com/tmknom/traceable-identifier-action): Generate traceable identifier optimized for GitHub Actions.
 
 ## Release notes
 
