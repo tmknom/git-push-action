@@ -97,6 +97,12 @@ to retrieve the complete branch history.
 Normally, if there are no changes, no commit or push will occur.
 However, if you set `allow-empty: true`, an empty commit will be created even when there are no changes.
 
+### Can I specify which files to commit?
+
+Yes. You can specify the files to add before committing by using the `paths` input.
+It accepts a space-separated list of file paths, and supports glob patterns such as `*.md` or `docs/*.txt`.
+If not specified, all changes are added (`.`) by default.
+
 ### Can I specify a multi-line commit message?
 
 Yes. You can specify a multi-line commit message by using YAML's block scalar style (`|`),
@@ -117,6 +123,12 @@ The first line will be treated as the commit subject, and the following lines as
 
 Currently, the implementation assumes pushing to a newly created branch.
 If you attempt to push to an existing branch, a Git command error such as "branch already exists" may occur.
+
+### What happens if an error occurs during Git operations?
+
+If a Git operation such as `switch`, `commit`, or `push` fails,
+the action will output a detailed error message and fail immediately.
+The error message includes the Git command's stderr output for easier debugging.
 
 ## Related projects
 
