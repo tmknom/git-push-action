@@ -150,6 +150,56 @@ jobs:
           set -x
           git push origin "${BRANCH}" --delete || true
 
+  test-paths:
+    name: Test paths
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+
+      - name: Setup
+        run: |
+          set -x
+          echo "This should be committed." > included.txt
+          echo "This should NOT be committed." > excluded.txt
+
+      - name: Exercise
+        id: exercise
+        uses: ./
+        with:
+          message: Created at ${{ github.job }}/${{ github.run_id }}/${{ github.run_attempt }}
+          paths: included.txt
+
+      - name: Checkout
+        uses: tmknom/checkout-action@v1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Verify
+        env:
+          PUSHED: ${{ steps.exercise.outputs.pushed }}
+          BRANCH: ${{ steps.exercise.outputs.branch }}
+        run: |
+          set -x
+          test "${PUSHED}" = "true"
+          git branch
+          git fetch --depth=1 origin "${BRANCH}"
+          git switch "${BRANCH}"
+
+          test -f "included.txt"
+          test ! -f "excluded.txt"
+
+      - name: Delete branch
+        if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.exercise.outputs.branch }}
+        run: |
+          set -x
+          git push origin "${BRANCH}" --delete || true
+
   test-multiline-body:
     name: Test multiline body
     runs-on: ubuntu-latest
