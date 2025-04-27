@@ -1,6 +1,6 @@
 # git-push-action
 
-Commit all modified files and push to the repository.
+Commit and push changes made during a GitHub Actions workflow, with flexible branch and commit message options.
 
 <!-- actdocs start -->
 
