@@ -99,7 +99,7 @@ runs:
 
         error="$(mktemp)"
         if ! git switch -c "${branch}" "${START_POINT}" 2> "${error}"; then
-          echo "::error title=git switch failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          echo "::error title=git switch failed::$(awk '{printf "%s", $0 "%0A"}' "${error}")"
           rm -f "${error}"
           exit 1
         fi
@@ -119,7 +119,7 @@ runs:
 
         error="$(mktemp)"
         if ! git add "${flags[@]}" 2> "${error}"; then
-          echo "::error title=git add failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          echo "::error title=git add failed::$(awk '{printf "%s", $0 "%0A"}' "${error}")"
           rm -f "${error}"
           exit 1
         fi
@@ -149,7 +149,7 @@ runs:
 
         error="$(mktemp)"
         if ! git commit "${flags[@]}" 2> "${error}"; then
-          echo "::error title=git commit failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          echo "::error title=git commit failed::$(awk '{printf "%s", $0 "%0A"}' "${error}")"
           rm -f "${error}"
           exit 1
         fi
@@ -166,7 +166,7 @@ runs:
         set -x
         error="$(mktemp)"
         if ! git push origin "${BRANCH}" 2> "${error}"; then
-          echo "::error title=git push failed::$(awk '{printf "%s\\n", $0}' "${error}")"
+          echo "::error title=git push failed::$(awk '{printf "%s", $0 "%0A"}' "${error}")"
           rm -f "${error}"
           exit 1
         fi
